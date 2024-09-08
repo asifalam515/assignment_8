@@ -1,4 +1,7 @@
 import { useLoaderData, useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { saveReadingList, saveWishList } from "../../utility/Utility";
 
 const BookDetails = () => {
   const jobs = useLoaderData();
@@ -10,18 +13,26 @@ const BookDetails = () => {
     category,
     review,
     tags,
+    bookId,
     publisher,
     yearOfPublishing,
     rating,
+    image,
     totalPages,
   } = job;
+  //
+  const handleWishBtn = () => {
+    saveWishList(bookId);
+    toast("Added to Wish List");
+  };
+  const handleReadBtn = () => {
+    saveReadingList(bookId);
+    toast("Added to Reading List");
+  };
   return (
     <div className="card bg-base-100 flex flex-row shadow-xl">
       <figure>
-        <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt="Shoes"
-        />
+        <img src={image} alt="Shoes" />
       </figure>
       <div className=" mx-2">
         <h2 className="card-title">{bookName}</h2>
@@ -73,8 +84,13 @@ const BookDetails = () => {
           </div>
         </div>
         <div className="card-actions ">
-          <button className="btn btn-neutral">Read</button>
-          <button className="btn btn-success">Wishlist</button>
+          <button onClick={handleReadBtn} className="btn btn-neutral">
+            Read
+          </button>
+          <ToastContainer />
+          <button onClick={handleWishBtn} className="btn btn-success">
+            Wishlist
+          </button>
         </div>
       </div>
     </div>

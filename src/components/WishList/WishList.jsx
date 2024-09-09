@@ -13,7 +13,7 @@ const WishList = () => {
       <ul>
         {wishedBooks.map((book) => (
           <li key={book.bookId}>
-            <div className="card bg-base-100 w-100 shadow-xl flex flex-row">
+            <div className="card bg-base-100 w-100 shadow-xl  grid grid-cols-3 gap-10 my-10">
               <figure>
                 <img src={book.image} alt="Book Cover" />
               </figure>

@@ -5,6 +5,7 @@ import Navbar from "../Navbar/Navbar";
 import WishList from "../WishList/WishList";
 import ReadingList from "../ReadingList/ReadingList";
 import { BooksContext } from "../../context/bookContext";
+import Chart from "../Chart/Chart";
 
 const ListedBooks = () => {
   const books = useLoaderData();
@@ -52,6 +53,7 @@ const ListedBooks = () => {
         <div className="hidden">
           <WishList />
           <ReadingList />
+          <Chart></Chart>
         </div>
       </div>
     </BooksContext.Provider>

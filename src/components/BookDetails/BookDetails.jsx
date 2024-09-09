@@ -1,12 +1,17 @@
 import { useLoaderData, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { saveReadingList, saveWishList } from "../../utility/Utility";
+import {
+  saveReadingList,
+  saveWishList,
+  getStoredReadingList,
+  getStoredWishList,
+} from "../../utility/Utility";
 
 const BookDetails = () => {
-  const jobs = useLoaderData();
+  const books = useLoaderData();
   const { id } = useParams();
-  const job = jobs.find((job) => job.bookId == id);
+  const book = books.find((book) => book.bookId == id);
   const {
     bookName,
     author,
@@ -19,36 +24,46 @@ const BookDetails = () => {
     rating,
     image,
     totalPages,
-  } = job;
-  //
+  } = book;
+
   const handleWishBtn = () => {
+    const readingList = getStoredReadingList();
+    if (readingList.includes(bookId)) {
+      toast.error("This book is already in your Reading List");
+      return;
+    }
     saveWishList(bookId);
-    toast("Added to Wish List");
+    toast.success("Added to Wish List");
   };
+
   const handleReadBtn = () => {
+    const wishList = getStoredWishList();
+    if (wishList.includes(bookId)) {
+      const updatedWishList = wishList.filter((id) => id !== bookId);
+      localStorage.setItem("wish-list", JSON.stringify(updatedWishList));
+      toast.info("Removed from Wish List");
+    }
     saveReadingList(bookId);
-    toast("Added to Reading List");
+    toast.success("Added to Reading List");
   };
+
   return (
     <div className="card bg-base-100 flex flex-row shadow-xl">
       <figure>
         <img src={image} alt="Shoes" />
       </figure>
-      <div className=" mx-2">
+      <div className="mx-2">
         <h2 className="card-title">{bookName}</h2>
         <p>By: {author}</p>
         <hr />
-
         <p>{category}</p>
-
         <hr />
         <h5>
-          {" "}
-          <span className="font-bold">Review</span>:{review}{" "}
+          <span className="font-bold">Review</span>: {review}
         </h5>
         <div className="">
           <h2 className="text-green-600 flex flex-row gap-5">
-            <h1 className="text-gray-400 font-bold"> Tag:</h1>
+            <h1 className="text-gray-400 font-bold">Tag:</h1>
             {tags.map((tag, idx) => (
               <p key={idx}>#{tag}</p>
             ))}
@@ -58,15 +73,11 @@ const BookDetails = () => {
         <div className="my-2">
           <div className="overflow-x-auto">
             <table className="table">
-              {/* head */}
-
               <tbody>
-                {/* row 1 */}
                 <tr className="hover">
-                  <td>Number of Pages </td>
+                  <td>Number of Pages</td>
                   <td className="font-bold">: {totalPages}</td>
                 </tr>
-                {/* row 2 */}
                 <tr>
                   <td>Publisher:</td>
                   <td className="font-bold">: {publisher}</td>
@@ -83,14 +94,14 @@ const BookDetails = () => {
             </table>
           </div>
         </div>
-        <div className="card-actions ">
+        <div className="card-actions">
           <button onClick={handleReadBtn} className="btn btn-neutral">
             Read
           </button>
-          <ToastContainer />
           <button onClick={handleWishBtn} className="btn btn-success">
             Wishlist
           </button>
+          <ToastContainer />
         </div>
       </div>
     </div>

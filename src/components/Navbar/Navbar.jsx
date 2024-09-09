@@ -32,7 +32,7 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li>
-              <a>Listed Books</a>
+              <NavLink to="/listed/">Listed Books</NavLink>
             </li>
             <li>
               <a>Pages to Read</a>
@@ -50,11 +50,18 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a className="btn btn-outline btn-succes">Home</a>
+            <NavLink to="/" className="btn btn-outline btn-success">
+              Home
+            </NavLink>
+          </li>
+          <li className="mx-2">
+            <NavLink to="/books" className="btn btn-outline ">
+              Books
+            </NavLink>
           </li>
           <li>
             {" "}
-            <a href="">Listed Books </a>{" "}
+            <NavLink to="/listed/">Listed Books </NavLink>{" "}
           </li>
           <li>
             <a>Pages to Read</a>

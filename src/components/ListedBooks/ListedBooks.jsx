@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLoaderData } from "react-router-dom";
 import { getStoredReadingList, getStoredWishList } from "../../utility/Utility";
 import Navbar from "../Navbar/Navbar";
+import WishList from "../WishList/WishList";
+import ReadingList from "../ReadingList/ReadingList";
+import { BooksContext } from "../../context/bookContext";
 
 const ListedBooks = () => {
   const books = useLoaderData();
@@ -28,24 +31,30 @@ const ListedBooks = () => {
   }, [books]);
 
   return (
-    <div>
-      <Navbar></Navbar>
-      <h1 className="text-5xl">Reading List: {readBooks.length}</h1>
-      <h1 className="text-5xl">Wished List: {wishedBooks.length}</h1>
+    <BooksContext.Provider value={{ wishedBooks, readBooks }}>
+      <div>
+        <Navbar />
+        <h1 className="text-5xl">Reading List: {readBooks.length}</h1>
+        <h1 className="text-5xl">Wished List: {wishedBooks.length}</h1>
 
-      <h2 className="text-3xl font-bold text-center">Books</h2>
-      <div className="flex flex-row gap-10">
-        <NavLink to="/listed/reading/" className="btn btn-primary">
-          {" "}
-          Read List
-        </NavLink>
-        <NavLink to="/listed/wishlist/" className="btn btn-secondary">
-          {" "}
-          Wishlist Books
-        </NavLink>
+        <h2 className="text-3xl font-bold text-center">Books</h2>
+        <div className="flex flex-row gap-10">
+          <NavLink to="/listed/reading/" className="btn btn-primary">
+            Read List
+          </NavLink>
+          <NavLink to="/listed/wishlist/" className="btn btn-secondary">
+            Wishlist Books
+          </NavLink>
+        </div>
+        <div className="m-10">
+          <Outlet />
+        </div>
+        <div className="hidden">
+          <WishList />
+          <ReadingList />
+        </div>
       </div>
-      <Outlet></Outlet>
-    </div>
+    </BooksContext.Provider>
   );
 };
 
